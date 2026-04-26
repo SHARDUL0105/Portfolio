@@ -1,6 +1,6 @@
 # Portfolio
 This Repository is to manage my portfolio
-🔗 Live Website: https://shardul0105.github.io/portfolio/
+🔗 Live Website: https://shardul0105.github.io/Portfolio/
 
 🚀 About
 
