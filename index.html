@@ -18,6 +18,22 @@
     --card: #0a0a12;
   }
 
+  [data-theme="light"] {
+    --bg: #f5f5f7;
+    --surface: #ffffff;
+    --border: #d1d1e0;
+    --accent: #00b85e;
+    --accent2: #6d28d9;
+    --accent3: #d97706;
+    --text: #111118;
+    --muted: #6b6b80;
+    --card: #ffffff;
+  }
+
+  html {
+    transition: background-color 0.3s ease;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
 
   html { scroll-behavior: smooth; }
@@ -798,6 +814,48 @@
   .cert-item:hover .cert-view { opacity: 1; }
   .cert-item:hover { box-shadow: 0 0 0 1px var(--accent2), 0 8px 24px rgba(0,0,0,0.3); transform: translateY(-2px); }
 
+  /* Light mode hardcoded color overrides */
+  [data-theme="light"] nav {
+    background: rgba(245,245,247,0.85);
+  }
+  [data-theme="light"] .hero-desc {
+    color: #222230;
+  }
+  [data-theme="light"] .project-desc {
+    color: #444460;
+  }
+  [data-theme="light"] .timeline-desc {
+    color: #444460;
+  }
+  [data-theme="light"] .photo-frame::after {
+    background: linear-gradient(to bottom, transparent 60%, rgba(245,245,247,0.6) 100%);
+  }
+  [data-theme="light"] .hero-bg {
+    background: radial-gradient(ellipse 60% 50% at 80% 50%, rgba(0,184,94,0.06) 0%, transparent 70%),
+                radial-gradient(ellipse 40% 60% at 20% 80%, rgba(109,40,217,0.08) 0%, transparent 60%);
+  }
+
+  /* Theme Toggle Button */
+  .theme-toggle {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    cursor: pointer;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    flex-shrink: 0;
+  }
+  .theme-toggle:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
 </style>
 </head>
 <body>
@@ -815,6 +873,7 @@
     <a href="#education">Education</a>
     <a href="#contact">Contact</a>
   </div>
+  <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme" title="Toggle light/dark theme">🌙</button>
 </nav>
 
 <!-- Hero -->
@@ -1268,6 +1327,50 @@ function downloadResume() {
   a.download = 'Shardul_Kulkarni_Resume.pdf';
   a.click();
 }
+
+// ── Theme Toggle ──────────────────────────────────────────────
+(function() {
+  const html = document.documentElement;
+  const btn  = document.getElementById('themeToggle');
+  const STORAGE_KEY = 'portfolio-theme';
+
+  // Determine initial theme: stored preference → system preference
+  function getInitialTheme() {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored) return stored;
+    return window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark';
+  }
+
+  function applyTheme(theme) {
+    if (theme === 'light') {
+      html.setAttribute('data-theme', 'light');
+      btn.textContent = '☀️';
+      btn.title = 'Switch to dark theme';
+    } else {
+      html.removeAttribute('data-theme');
+      btn.textContent = '🌙';
+      btn.title = 'Switch to light theme';
+    }
+  }
+
+  // Apply on load (before first paint if possible)
+  const initial = getInitialTheme();
+  applyTheme(initial);
+
+  btn.addEventListener('click', function() {
+    const isDark = !html.hasAttribute('data-theme');
+    const next   = isDark ? 'light' : 'dark';
+    localStorage.setItem(STORAGE_KEY, next);
+    applyTheme(next);
+  });
+
+  // Respond to OS-level changes (only when no stored preference)
+  window.matchMedia('(prefers-color-scheme: light)').addEventListener('change', function(e) {
+    if (!localStorage.getItem(STORAGE_KEY)) {
+      applyTheme(e.matches ? 'light' : 'dark');
+    }
+  });
+})();
 </script>
 
 </body>
