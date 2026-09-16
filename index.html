@@ -383,35 +383,106 @@
     margin-bottom: 3rem;
   }
 
-  /* Skills */
+      /* Skills Visual Grid - Theme Matched */
   .skills-section {
     background: var(--surface);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
+    padding: 6rem 4rem;
   }
-
-  .skills-grid {
+  .skills-category {
+    margin-bottom: 2.8rem;
+  }
+  .skills-category:last-child {
+    margin-bottom: 0;
+  }
+  .skills-category-title {
+    font-size: 0.68rem;
+    color: var(--muted);
+    margin-bottom: 1.2rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+  }
+  .skills-category-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+  .skills-visual-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-    gap: 0.8rem;
+    grid-template-columns: repeat(auto-fill, minmax(115px, 1fr));
+    gap: 1rem;
   }
-
-  .skill-chip {
+  .skill-card {
     background: var(--card);
     border: 1px solid var(--border);
-    padding: 0.7rem 1rem;
-    font-size: 0.65rem;
-    letter-spacing: 0.1em;
-    color: var(--muted);
+    border-radius: 8px;
+    padding: 1.4rem 0.6rem 1.1rem 0.6rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
     text-align: center;
-    transition: all 0.2s;
+    color: var(--text);
+    transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
     cursor: default;
+    position: relative;
+    overflow: hidden;
   }
-  .skill-chip:hover {
+  .skill-card::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--accent);
+    transform: scaleX(0);
+    transition: transform 0.25s ease;
+  }
+  .skill-card:hover {
     border-color: var(--accent);
     color: var(--accent);
-    background: rgba(0,255,136,0.04);
-    transform: translateY(-3px);
+    transform: translateY(-5px);
+    box-shadow: 0 10px 24px rgba(0, 0, 0, 0.35);
+  }
+  .skill-card:hover::after {
+    transform: scaleX(1);
+  }
+  .skill-card-icon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.8rem;
+    color: var(--text);
+    transition: transform 0.25s ease, color 0.25s ease, filter 0.25s ease;
+  }
+  .skill-card-icon svg {
+    width: 34px;
+    height: 34px;
+    display: block;
+    transition: all 0.25s ease;
+  }
+  .skill-card:hover .skill-card-icon {
+    color: var(--accent);
+    transform: scale(1.15);
+    filter: drop-shadow(0 0 8px rgba(0, 255, 136, 0.4));
+  }
+  .skill-card-name {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: inherit;
+    letter-spacing: 0.03em;
+    line-height: 1.2;
+    transition: color 0.25s ease;
   }
 
   /* Project */
@@ -676,7 +747,27 @@
     transform: translateY(-5px);
   }
 
-  .profile-icon { font-size: 2rem; margin-bottom: 0.8rem; display: block; }
+  .profile-icon {
+    margin-bottom: 0.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 38px;
+    color: var(--accent);
+    transition: transform 0.3s ease, filter 0.3s ease;
+  }
+  .profile-icon svg {
+    width: 32px;
+    height: 32px;
+    display: block;
+    transition: all 0.3s ease;
+  }
+  .profile-card:hover .profile-icon {
+    transform: scale(1.15);
+  }
+  .profile-card:hover .profile-icon svg {
+    filter: drop-shadow(0 0 8px rgba(0,255,136,0.35));
+  }
   .profile-name {
     font-family: 'Syne', sans-serif;
     font-size: 1rem;
@@ -907,9 +998,87 @@
   [data-theme="light"] .theme-switch-icon.icon-sun { color: var(--accent); }
   :not([data-theme="light"]) .theme-switch-icon.icon-moon { color: var(--accent); }
 
+    /* ── Minimalist Typing Screen Animation ── */
+  .preloader-screen {
+    position: fixed;
+    inset: 0;
+    z-index: 100000;
+    background: var(--bg);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                filter 0.7s ease;
+  }
+  .preloader-screen.preloader-done {
+    opacity: 0;
+    filter: blur(8px);
+    pointer-events: none;
+  }
+  .preloader-terminal {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: clamp(1.2rem, 3vw, 2rem);
+    font-weight: 500;
+    color: var(--text);
+    letter-spacing: -0.02em;
+    display: flex;
+    align-items: center;
+    user-select: none;
+  }
+  .terminal-prompt {
+    color: var(--accent);
+    font-weight: 700;
+    margin-right: 0.4rem;
+  }
+  .typed-text {
+    color: var(--text);
+    white-space: pre;
+  }
+  .typed-cursor {
+    color: var(--accent);
+    font-weight: 700;
+    margin-left: 2px;
+    animation: blinkCursor 0.8s infinite;
+  }
+  @keyframes blinkCursor {
+    0%, 49% { opacity: 1; }
+    50%, 100% { opacity: 0; }
+  }
+
+  /* Hero entrance staggered animation */
+  .hero-tag, .hero-name, .hero-title, .hero-desc, .photo-container {
+    opacity: 0;
+    transform: translateY(16px);
+    transition: opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+                transform 0.7s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .site-loaded .hero-tag {
+    opacity: 1; transform: translateY(0); transition-delay: 0.05s;
+  }
+  .site-loaded .hero-name {
+    opacity: 1; transform: translateY(0); transition-delay: 0.18s;
+  }
+  .site-loaded .hero-title {
+    opacity: 1; transform: translateY(0); transition-delay: 0.3s;
+  }
+  .site-loaded .hero-desc {
+    opacity: 1; transform: translateY(0); transition-delay: 0.42s;
+  }
+  .site-loaded .photo-container {
+    opacity: 1; transform: translateY(0); transition-delay: 0.25s;
+  }
+
 </style>
 </head>
 <body>
+
+<!-- Minimalist Typing Screen Animation -->
+<div id="preloader" class="preloader-screen">
+  <div class="preloader-terminal">
+    <span class="terminal-prompt">&gt;</span><span id="typedText" class="typed-text"></span><span class="typed-cursor">_</span>
+  </div>
+</div>
+</div>
 
 <div class="cursor" id="cursor"></div>
 <div class="cursor-trail" id="cursorTrail"></div>
@@ -1180,55 +1349,307 @@
   <div class="section-label">// 02 Technical Skills</div>
   <h2 class="section-title">My Arsenal</h2>
 
-  <div class="two-col">
-    <div>
-      <p style="font-size:0.7rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing:0.1em;">LANGUAGES</p>
-      <div class="skills-grid">
-        <div class="skill-chip">C++</div>
-        <div class="skill-chip">Java</div>
-        <div class="skill-chip">Python</div>
-        <div class="skill-chip">JavaScript</div>
-        <div class="skill-chip">TypeScript</div>
-        <div class="skill-chip">HTML / CSS</div>
+  <!-- Category: Languages -->
+  <div class="skills-category">
+    <div class="skills-category-title">Programming Languages</div>
+    <div class="skills-visual-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M12 2C6.477 2 2 6.477 2 12s4.477 10 10 10 10-4.477 10-10c0-1.898-.53-3.673-1.455-5.187l-3.327 2.22A5.96 5.96 0 0 1 18 12c0 3.314-2.686 6-6 6s-6-2.686-6-6 2.686-6 6-6c1.29 0 2.483.407 3.462 1.101l3.076-2.564A9.957 9.957 0 0 0 12 2z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">C</div>
       </div>
-    </div>
-    <div>
-      <p style="font-size:0.7rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing:0.1em;">WEB & BACKEND</p>
-      <div class="skills-grid">
-        <div class="skill-chip">React.js</div>
-        <div class="skill-chip">Node.js</div>
-        <div class="skill-chip">Express.js</div>
-        <div class="skill-chip">MongoDB</div>
-        <div class="skill-chip">Redis</div>
-        <div class="skill-chip">REST APIs</div>
-        <div class="skill-chip">JWT Auth</div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M11.97 1.5 2.5 6.96v11.08l9.47 5.46 9.53-5.46V6.96L11.97 1.5zm0 2.31 7.47 4.31v8.76L12 21.19l-7.47-4.31V8.12l7.44-4.31zM10.8 7.5A4.5 4.5 0 1 0 14 15.5l-1.3-1.3a2.7 2.7 0 1 1-.1-4.4l1.4-1.4a4.5 4.5 0 0 0-3.2-.9zm4.2 3.5h1v-1h1v1h1v1h-1v1h-1v-1h-1v-1zm4 0h1v-1h1v1h1v1h-1v1h-1v-1h-1v-1z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">C++</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M8.85 17.06c2.47.2 4.67.13 7.82-1.02.83-.3 1.57.17 1.48.7-.35 2.05-3.07 2.87-5.58 3.05-3.52.25-6.52-.77-3.72-2.73zm-2.07-3.32c3.12.24 5.9.17 9.9-1.29 1.05-.39 1.98.22 1.88.89-.45 2.59-3.9 3.63-7.07 3.86-4.46.32-8.25-.97-4.71-3.46zm9.88-5.32c.58 1.95-1.53 3.65-1.53 3.65s3.94-2.04 2.15-5.56c-1.63-3.21-5.69-3.42-5.69-3.42s3.68 1.15 5.07 5.33zm-4.14-5.36s3.04 1.76.63 5.41c-2.04 3.09-1.46 4.79-1.46 4.79s-.35-1.84 1.17-3.69c1.94-2.37 2.1-4.74-.34-6.51zM4.5 20.8c5.44.35 10.3.23 15.02-1.33.6-.2 1.12.18 1.04.56-.47 2.22-4.7 3.47-8.91 3.73-4.73.29-9.84-.71-7.15-2.96zm8-10.6c-1.3-.2-3.1.5-4.1 1.4 0 0 1.6-.6 3.3.1 1.6.7 1.8 1.5 2.9 1.6 1.4.1 2.3-.9 2.3-.9s-.7.5-1.9.4c-1.1-.1-1.3-.8-2.5-2.6z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Java</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M11.91 2c-5.07 0-4.75 2.19-4.75 2.19l.01 2.28h4.82v.69H5.16S2 6.8 2 11.93c0 5.14 2.76 4.95 2.76 4.95h1.64v-2.32s-.09-2.76 2.72-2.76h4.68s2.63.04 2.63-2.58V4.62S16.98 2 11.91 2zm-2.6 1.54a.9.9 0 1 1 0 1.8.9.9 0 0 1 0-1.8zM12.09 22c5.07 0 4.75-2.19 4.75-2.19l-.01-2.28h-4.82v-.69h6.83S22 17.2 22 12.07c0-5.14-2.76-4.95-2.76-4.95h-1.64v2.32s.09 2.76-2.72 2.76h-4.68s-2.63-.04-2.63 2.58v4.6s-.56 2.62 4.52 2.62zm2.6-1.54a.9.9 0 1 1 0-1.8.9.9 0 0 1 0 1.8z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Python</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="2" width="20" height="20" rx="4"/>
+  <path d="M8 15.5c.6.4 1.3.6 2 .6 1.3 0 2-.6 2-1.9V8"/>
+  <path d="M15 15.6c.8.5 1.7.7 2.6.7 1.8 0 2.8-.9 2.8-2.3 0-1.3-.8-1.9-2.1-2.4-.9-.4-1.3-.7-1.3-1.2 0-.5.4-.9 1.1-.9.7 0 1.3.2 1.8.6"/>
+</svg>
+        </div>
+        <div class="skill-card-name">JavaScript</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="2" width="20" height="20" rx="4"/>
+  <path d="M6 9h6M9 9v8"/>
+  <path d="M14 15.6c.8.5 1.7.7 2.6.7 1.8 0 2.8-.9 2.8-2.3 0-1.3-.8-1.9-2.1-2.4-.9-.4-1.3-.7-1.3-1.2 0-.5.4-.9 1.1-.9.7 0 1.3.2 1.8.6"/>
+</svg>
+        </div>
+        <div class="skill-card-name">TypeScript</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M3 2l1.65 18.52L12 23l7.35-2.48L21 2H3zm14.8 6.1H7.4l.2 2.3h9.8l-.7 7.5-4.7 1.6-4.7-1.6-.3-3.5h2.2l.2 1.8 2.6.9 2.6-.9.3-3.1H7.8L7 4.2h11l-.2 3.9z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">HTML5</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M3 2l1.65 18.52L12 23l7.35-2.48L21 2H3zm14.8 6.1H7.4l.2 2.3h9.8l-.7 7.5-4.7 1.6-4.7-1.6-.3-3.5h2.2l.2 1.8 2.6.9 2.6-.9.3-3.1H7.8L7 4.2h11l-.2 3.9z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">CSS3</div>
       </div>
     </div>
   </div>
 
-  <div class="two-col" style="margin-top: 2.5rem;">
-    <div>
-      <p style="font-size:0.7rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing:0.1em;">TOOLS & PLATFORMS</p>
-      <div class="skills-grid">
-        <div class="skill-chip">Git / GitHub</div>
-        <div class="skill-chip">Docker</div>
-        <div class="skill-chip">Postman</div>
-        <div class="skill-chip">VS Code</div>
-        <div class="skill-chip">Linux</div>
-        <div class="skill-chip">Vercel</div>
-        <div class="skill-chip">Render</div>
+  <!-- Category: Web & Backend -->
+  <div class="skills-category">
+    <div class="skills-category-title">Web & Backend Development</div>
+    <div class="skills-visual-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.4">
+  <circle cx="12" cy="12" r="2" fill="currentColor"/>
+  <ellipse cx="12" cy="12" rx="10" ry="3.8"/>
+  <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(60 12 12)"/>
+  <ellipse cx="12" cy="12" rx="10" ry="3.8" transform="rotate(120 12 12)"/>
+</svg>
+        </div>
+        <div class="skill-card-name">React.js</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M12 2.13a1.5 1.5 0 0 0-.75.2L3.75 6.6a1.5 1.5 0 0 0-.75 1.3v8.54a1.5 1.5 0 0 0 .75 1.3l7.5 4.27a1.5 1.5 0 0 0 1.5 0l7.5-4.27a1.5 1.5 0 0 0 .75-1.3V7.9a1.5 1.5 0 0 0-.75-1.3l-7.5-4.27a1.5 1.5 0 0 0-.75-.2zm0 4.37a5.5 5.5 0 0 1 4.8 2.8l-2 1.1a3.2 3.2 0 0 0-2.8-1.6c-1.8 0-3.2 1.4-3.2 3.2s1.4 3.2 3.2 3.2a3.2 3.2 0 0 0 2.8-1.6l2 1.1a5.5 5.5 0 0 1-4.8 2.8c-3 0-5.5-2.5-5.5-5.5s2.5-5.5 5.5-5.5z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Node.js</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="2" width="20" height="20" rx="4"/>
+  <text x="12" y="16" font-family="'JetBrains Mono', monospace" font-size="11" font-weight="800" fill="currentColor" stroke="none" text-anchor="middle">ex</text>
+</svg>
+        </div>
+        <div class="skill-card-name">Express.js</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="3" width="20" height="14" rx="2"/>
+  <line x1="8" y1="21" x2="16" y2="21"/>
+  <line x1="12" y1="17" x2="12" y2="21"/>
+  <path d="m7 8 2 2-2 2"/>
+  <line x1="12" y1="12" x2="16" y2="12"/>
+</svg>
+        </div>
+        <div class="skill-card-name">REST APIs</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/>
+  <path d="M12 6a6 6 0 0 0-6 6 6 6 0 0 0 6 6 6 6 0 0 0 6-6 6 6 0 0 0-6-6zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4z"/>
+  <circle cx="12" cy="12" r="2"/>
+</svg>
+        </div>
+        <div class="skill-card-name">JWT Auth</div>
       </div>
     </div>
-    <div>
-      <p style="font-size:0.7rem; color: var(--muted); margin-bottom: 1.5rem; letter-spacing:0.1em;">CORE CS CONCEPTS</p>
-      <div class="skills-grid">
-        <div class="skill-chip">Data Structures</div>
-        <div class="skill-chip">Algorithms</div>
-        <div class="skill-chip">System Design</div>
-        <div class="skill-chip">OOP</div>
-        <div class="skill-chip">DBMS (SQL/NoSQL)</div>
-        <div class="skill-chip">Operating Systems</div>
-        <div class="skill-chip">Generative AI</div>
+  </div>
+
+  <!-- Category: Databases & Caching -->
+  <div class="skills-category">
+    <div class="skills-category-title">Databases & Caching</div>
+    <div class="skills-visual-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M11.9 1.4s-.3.4-.6.8C9.5 4.3 6 8.5 6 12.8c0 4.1 3 7.8 5.7 9.8.1.1.2.1.3.1s.2 0 .3-.1c2.7-2 5.7-5.7 5.7-9.8 0-4.3-3.5-8.5-5.3-10.6-.3-.4-.6-.8-.8-.8zm.1 20.9c-.3 0-.6-.5-.6-1.1v-6.9c0-.6.3-1.1.6-1.1s.6.5.6 1.1v6.9c0 .6-.3 1.1-.6 1.1z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">MongoDB</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M21.5 7.6 12.3 3a.9.9 0 0 0-.7 0L2.5 7.6a.8.8 0 0 0 0 1.5l3.2 1.6-3.2 1.6a.8.8 0 0 0 0 1.5l3.2 1.6-3.2 1.6a.8.8 0 0 0 0 1.5l9.1 4.6a.9.9 0 0 0 .7 0l9.2-4.6a.8.8 0 0 0 0-1.5l-3.2-1.6 3.2-1.6a.8.8 0 0 0 0-1.5l-3.2-1.6 3.2-1.6a.8.8 0 0 0 0-1.5zM12 11.2 4.5 7.4 12 3.6l7.5 3.8-7.5 3.8z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Redis</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <ellipse cx="12" cy="5" rx="9" ry="3"/>
+  <path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/>
+  <path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/>
+</svg>
+        </div>
+        <div class="skill-card-name">SQL / DBMS</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category: Tools & Platforms -->
+  <div class="skills-category">
+    <div class="skills-category-title">Tools & Cloud Platforms</div>
+    <div class="skills-visual-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M21.6 10.7 13.3 2.4a1.8 1.8 0 0 0-2.6 0l-2 2L11.3 7a2.2 2.2 0 0 1 2.8 2.8l2.5 2.5a2.2 2.2 0 1 1-1.3 1.3L13 11.3v5.1a2.2 2.2 0 1 1-1.8 0V11a2.2 2.2 0 0 1-1.1-2.9L7.5 5.5 2.4 10.7a1.8 1.8 0 0 0 0 2.6l8.3 8.3c.7.7 1.9.7 2.6 0l8.3-8.3a1.8 1.8 0 0 0 0-2.6z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Git</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">GitHub</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M13.9 10.1h-1.8V8.3h1.8v1.8zm-2.4 0H9.7V8.3h1.8v1.8zm-2.4 0H7.3V8.3h1.8v1.8zm7.2 0h-1.8V8.3h1.8v1.8zm-2.4-2.4h-1.8V5.9h1.8v1.8zm-2.4 0H9.7V5.9h1.8v1.8zm4.8 0h-1.8V5.9h1.8v1.8zM23.5 11c-.4-.4-1.3-.4-2.1-.2-.3-.8-.9-1.5-1.7-1.9-.3-.2-.7-.3-1-.3l-.4.3c-.5.4-.8 1.1-.9 1.7H1.3c-.6 0-1.1.4-1.2 1-.8 3.5 1.4 7.6 5.8 8.7 5.1 1.2 10.6-.2 14.5-3.8 2.1-1.9 3.2-4.1 3.1-5.5z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Docker</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="12" r="9"/>
+  <path d="M14.5 8.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-4.3 7.8 1.7-2.9 2.5 1.4-1.7 2.9-2.5-1.4zm-2.7-1.6 3.5-6.1 1.7 1-3.5 6.1-1.7-1z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Postman</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M12 2C9.5 2 8 4.2 8 7v4.5c0 1.2-.5 2.2-1.3 3-1 .9-1.7 2.2-1.7 3.5 0 2.2 3.1 4 7 4s7-1.8 7-4c0-1.3-.7-2.6-1.7-3.5-.8-.8-1.3-1.8-1.3-3V7c0-2.8-1.5-5-4-5zm0 4.5c2 0 3.5 1.8 3.5 4.5v3c0 2.7-1.5 4.5-3.5 4.5s-3.5-1.8-3.5-4.5v-3c0-2.7 1.5-4.5 3.5-4.5z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Linux</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M17.5 1.5 6.2 12.3l11.3 10.2 4.5-2.2V3.7L17.5 1.5zm0 4.3v12.4L9.8 12.3 17.5 5.8zM4.2 6.4 2 7.7l4.2 4.6-4.2 4.6 2.2 1.3 4.5-3.4-2.5-2.5 2.5-2.5L4.2 6.4z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">VS Code</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M12 2 23 21H1L12 2z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Vercel</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="currentColor">
+  <path d="M12 4a6 6 0 0 0-6 6v10h4.5v-8.5a1.5 1.5 0 0 1 3 0V20H18v-10a6 6 0 0 0-6-6z"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Render</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Category: Core CS & Concepts -->
+  <div class="skills-category">
+    <div class="skills-category-title">Core CS & Concepts</div>
+    <div class="skills-visual-grid">
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <circle cx="12" cy="4" r="2.5" fill="currentColor"/>
+  <circle cx="6" cy="12" r="2.5" fill="currentColor"/>
+  <circle cx="18" cy="12" r="2.5" fill="currentColor"/>
+  <circle cx="6" cy="20" r="2.5" fill="currentColor"/>
+  <circle cx="18" cy="20" r="2.5" fill="currentColor"/>
+  <line x1="12" y1="6.5" x2="6" y2="9.5"/>
+  <line x1="12" y1="6.5" x2="18" y2="9.5"/>
+  <line x1="6" y1="14.5" x2="6" y2="17.5"/>
+  <line x1="18" y1="14.5" x2="18" y2="17.5"/>
+  <line x1="6" y1="12" x2="18" y2="20" stroke-dasharray="2 2"/>
+</svg>
+        </div>
+        <div class="skill-card-name">DSA</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="2" y="3" width="6" height="5" rx="1"/>
+  <rect x="16" y="3" width="6" height="5" rx="1"/>
+  <rect x="9" y="16" width="6" height="5" rx="1"/>
+  <path d="M5 8v4h14V8"/>
+  <line x1="12" y1="12" x2="12" y2="16"/>
+</svg>
+        </div>
+        <div class="skill-card-name">System Design</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="3" y="3" width="7" height="7" rx="1"/>
+  <rect x="14" y="3" width="7" height="7" rx="1"/>
+  <rect x="3" y="14" width="7" height="7" rx="1"/>
+  <rect x="14" y="14" width="7" height="7" rx="1"/>
+  <line x1="10" y1="6.5" x2="14" y2="6.5"/>
+  <line x1="6.5" y1="10" x2="6.5" y2="14"/>
+  <line x1="17.5" y1="10" x2="17.5" y2="14"/>
+  <line x1="10" y1="17.5" x2="14" y2="17.5"/>
+</svg>
+        </div>
+        <div class="skill-card-name">OOP</div>
+      </div>
+      <div class="skill-card">
+        <div class="skill-card-icon">
+          <svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+  <rect x="4" y="4" width="16" height="16" rx="2"/>
+  <rect x="8" y="8" width="8" height="8" rx="1"/>
+  <line x1="9" y1="1" x2="9" y2="4"/>
+  <line x1="15" y1="1" x2="15" y2="4"/>
+  <line x1="9" y1="20" x2="9" y2="23"/>
+  <line x1="15" y1="20" x2="15" y2="23"/>
+  <line x1="1" y1="9" x2="4" y2="9"/>
+  <line x1="1" y1="15" x2="4" y2="15"/>
+  <line x1="20" y1="9" x2="23" y2="9"/>
+  <line x1="20" y1="15" x2="23" y2="15"/>
+</svg>
+        </div>
+        <div class="skill-card-name">Operating Systems</div>
       </div>
     </div>
   </div>
@@ -1319,32 +1740,75 @@
 
   <div class="profiles-grid">
     <a href="https://leetcode.com/u/apyonet" target="_blank" class="profile-card">
-      <span class="profile-icon">⚔️</span>
+      <span class="profile-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M13.483 0a1.374 1.374 0 0 0-.961.438L7.116 6.226l-3.854 4.126a5.266 5.266 0 0 0-1.209 2.104 5.35 5.35 0 0 0-.125.513 5.527 5.527 0 0 0 .062 2.362 5.83 5.83 0 0 0 .349 1.017 5.938 5.938 0 0 0 4.818 3.593c.357.034.721.034 1.082 0a6.046 6.046 0 0 0 3.218-1.505l4.316-4.307a1.378 1.378 0 0 0 0-1.95 1.378 1.378 0 0 0-1.95 0l-4.349 4.341a3.3 3.3 0 0 1-1.777.831c-.201.02-.405.02-.606 0a3.18 3.18 0 0 1-2.607-1.942 3.12 3.12 0 0 1-.192-.562 3.007 3.007 0 0 1-.034-1.294 3.037 3.037 0 0 1 .686-1.168l3.89-4.164 4.542-4.884a1.376 1.376 0 0 0-.97-2.327z" fill="#FFA116"/>
+          <path d="M9.835 13.924H1.385a1.372 1.372 0 0 0-1.372 1.372 1.372 1.372 0 0 0 1.372 1.372H9.835a1.372 1.372 0 0 0 1.372-1.372 1.372 1.372 0 0 0-1.372-1.372z" fill="#B3B1B0"/>
+          <path d="M22.615 15.358l-5.215-5.215a1.378 1.378 0 0 0-1.95 0 1.378 1.378 0 0 0 0 1.95l5.215 5.215a1.378 1.378 0 0 0 1.95 0 1.378 1.378 0 0 0 0-1.95z" fill="#595959"/>
+        </svg>
+      </span>
       <div class="profile-name">LeetCode</div>
       <div class="profile-handle">u/apyonet · 200+ problems</div>
     </a>
+
     <a href="https://codechef.com/users/shardul_0301" target="_blank" class="profile-card">
-      <span class="profile-icon">👨‍🍳</span>
+      <span class="profile-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M11.666 0c-.57 0-1.036.467-1.036 1.038v1.654c-1.385.17-2.67.755-3.69 1.642-.258-.291-.628-.484-1.05-.484-.79 0-1.433.645-1.433 1.434 0 .285.086.549.23.774C3.123 7.391 2.25 9.17 2.25 11.139c0 1.77.712 3.393 1.884 4.613-.11.23-.178.484-.178.756 0 .977.79 1.768 1.768 1.768.423 0 .808-.15 1.114-.4a7.848 7.848 0 0 0 4.828 1.668v3.42c0 .57.466 1.036 1.036 1.036h.668c.57 0 1.036-.466 1.036-1.036v-3.42a7.846 7.846 0 0 0 4.828-1.668c.306.25.69.4 1.114.4.978 0 1.768-.791 1.768-1.768 0-.272-.068-.526-.178-.756 1.172-1.22 1.884-2.843 1.884-4.613 0-1.969-.873-3.748-2.437-5.081.144-.225.23-.489.23-.774 0-.789-.643-1.434-1.433-1.434-.422 0-.792.193-1.05.484-1.02-.887-2.305-1.472-3.69-1.642V1.038C13.37.467 12.904 0 12.334 0h-.668zm.334 4.148c3.957 0 7.166 3.208 7.166 7.166 0 3.957-3.209 7.165-7.166 7.165-3.958 0-7.166-3.208-7.166-7.165 0-3.958 3.208-7.166 7.166-7.166zm-2.834 4.333a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm5.668 0a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.834 4.5a3.5 3.5 0 0 0-3.031 1.75.75.75 0 0 0 1.299.75 2 2 0 0 1 3.464 0 .75.75 0 0 0 1.3-.75 3.5 3.5 0 0 0-3.032-1.75z" fill="#5B4638"/>
+        </svg>
+      </span>
       <div class="profile-name">CodeChef</div>
       <div class="profile-handle">shardul_0301</div>
     </a>
+
     <a href="https://github.com/SHARDUL0105" target="_blank" class="profile-card">
-      <span class="profile-icon">🐙</span>
+      <span class="profile-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.53 1.032 1.53 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0 1 12 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0 0 22 12.017C22 6.484 17.522 2 12 2z"/>
+        </svg>
+      </span>
       <div class="profile-name">GitHub</div>
       <div class="profile-handle">SHARDUL0105</div>
     </a>
+
     <a href="https://www.instagram.com/_shardulkulkarni_" target="_blank" class="profile-card">
-      <span class="profile-icon">📸</span>
+      <span class="profile-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="igGradient" x1="2" y1="22" x2="22" y2="2" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#fdf497"/>
+              <stop offset="5%" stop-color="#fdf497"/>
+              <stop offset="45%" stop-color="#fd5949"/>
+              <stop offset="60%" stop-color="#d6249f"/>
+              <stop offset="90%" stop-color="#285AEB"/>
+            </linearGradient>
+          </defs>
+          <rect x="2" y="2" width="20" height="20" rx="5" stroke="url(#igGradient)" stroke-width="2"/>
+          <circle cx="12" cy="12" r="4.5" stroke="url(#igGradient)" stroke-width="2"/>
+          <circle cx="17.5" cy="6.5" r="1.2" fill="url(#igGradient)"/>
+        </svg>
+      </span>
       <div class="profile-name">Instagram</div>
       <div class="profile-handle">_shardulkulkarni_</div>
     </a>
+
     <a href="https://linkedin.com/in/shardul-kulkarni-193753315" target="_blank" class="profile-card">
-      <span class="profile-icon">💼</span>
+      <span class="profile-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.762 0 5-2.239 5-5v-14c0-2.761-2.238-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" fill="#0A66C2"/>
+        </svg>
+      </span>
       <div class="profile-name">LinkedIn</div>
       <div class="profile-handle">shardul-kulkarni-193753315</div>
     </a>
+
     <a href="mailto:shardul0301@gmail.com" class="profile-card">
-      <span class="profile-icon">📧</span>
+      <span class="profile-icon">
+        <svg viewBox="0 0 24 24" width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" xmlns="http://www.w3.org/2000/svg">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path>
+        </svg>
+      </span>
       <div class="profile-name">Email</div>
       <div class="profile-handle">shardul0301@gmail.com</div>
     </a>
@@ -1378,7 +1842,7 @@
     <a href="https://linkedin.com/in/shardul-kulkarni-193753315" class="social-link" target="_blank">↗ LinkedIn</a>
     <a href="https://github.com/SHARDUL0105" class="social-link" target="_blank">↗ GitHub</a>
     <a href="https://www.instagram.com/_shardulkulkarni_" class="social-link" target="_blank">↗ Instagram</a>
-    <a href="tel:+917058887825" class="social-link">📞 +91 7058887825</a>
+    <a href="tel:+917058887825" class="social-link"><svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display:inline-block; vertical-align:-1px; margin-right:4px;"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path></svg>+91 7058887825</a>
   </div>
 </section>
 
@@ -1538,6 +2002,34 @@ function downloadResume() {
   });
 
 })();
+</script>
+
+<script>
+    // ── Minimalist Typing Screen Animation ──────────────────────────
+  (function() {
+    const preloader = document.getElementById('preloader');
+    const typedEl = document.getElementById('typedText');
+    if (!preloader || !typedEl) return;
+
+    const fullText = "shardul.init()";
+    let charIndex = 0;
+    const typingSpeed = 50; // ms per character
+
+    function typeChar() {
+      if (charIndex < fullText.length) {
+        typedEl.textContent += fullText.charAt(charIndex);
+        charIndex++;
+        setTimeout(typeChar, typingSpeed);
+      } else {
+        setTimeout(() => {
+          preloader.classList.add('preloader-done');
+          document.body.classList.add('site-loaded');
+        }, 320);
+      }
+    }
+
+    setTimeout(typeChar, 180);
+  })();
 </script>
 
 </body>
